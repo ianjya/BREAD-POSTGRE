@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BREAD App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mt-4">Edit</h1>
+      <form method="POST" action="/data/edit/<%= data.id %>" class="mt-4">
+        <div class="mb-3 row">
+          <label for="string" class="col-sm-2 col-form-label">String</label>
+          <div class="col-sm-10">
+            <input
+              type="text"
+              class="form-control"
+              id="string"
+              name="string"
+              value="<%= data.string %>"
+              required
+            />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="integer" class="col-sm-2 col-form-label">Integer</label>
+          <div class="col-sm-10">
+            <input
+              type="text"
+              class="form-control"
+              id="integer"
+              name="integer"
+              value="<%= data.integer %>"
+              required
+            />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="float" class="col-sm-2 col-form-label">Float</label>
+          <div class="col-sm-10">
+            <input
+              type="text"
+              class="form-control"
+              id="float"
+              name="float"
+              value="<%= data.float %>"
+              required
+            />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="date" class="col-sm-2 col-form-label">Date</label>
+          <div class="col-sm-10">
+            <input
+              type="date"
+              class="form-control"
+              id="date"
+              name="date"
+              value= "<%= moment(data.date).format('YYYY-MM-DD') %>"
+              required
+            />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="boolean" class="col-sm-2 col-form-label">Boolean</label>
+          <div class="col-sm-10">
+            <select class="form-select" id="boolean" name="boolean" required>
+                <option value="true" <%= data.boolean === 'true' ? 'selected' : '' %>>True</option>
+                <option value="false" <%= data.boolean === 'false' ? 'selected' : '' %>>False</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Simpan</button>
+      </form>
+    </div>
+  </body>
+</html>

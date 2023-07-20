@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BREAD App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <script src="https://kit.fontawesome.com/6ea2cb925f.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mt-4">BREAD (Browse, Read, Edit, Add, Delete)</h1>
+<br>
+<br>
+<ul>
+
+  <h4 ><i class="fa-solid fa-filter fa-2xs"></i> Filter</h4>
+</ul>
+      <form method="get" action="">
+        <input type="hidden" name="page" value="1">
+        <div class="mb-3 row">
+          <label for="search_string" class="col-sm-2 col-form-label"
+            >String</label
+          >
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="string"
+                name="string"
+                <%= sql.string === 'on' ? 'checked' : ''  %>
+              />
+              <input
+                type="text"
+                class="form-control"
+                id="search_string"
+                name="search_string"
+                value="<%= sql.search_string %>"
+                
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="search_integer" class="col-sm-2 col-form-label"
+            >Integer</label
+          >
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="integer"
+                name="integer"
+                <% if (sql.integer === 'on') { %>
+                  checked
+                <% } %>
+              />
+              <input
+                type="text"
+                class="form-control"
+                id="search_integer"
+                name="search_integer"
+                value="<%= sql.search_integer %>"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="search_float" class="col-sm-2 col-form-label"
+            >Float</label
+          >
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="float"
+                name="float"
+                <% if (sql.float === 'on') { %>
+                  checked
+                <% } %>
+              />
+              <input
+                type="text"
+                class="form-control"
+                id="search_float"
+                name="search_float"
+                value="<%= sql.search_float %>"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="search_date" class="col-sm-2 col-form-label">Date</label>
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="date"
+                name="date"
+                <% if (sql.date === 'on') { %>
+                  checked
+                <% } %>
+              />
+              <input
+                type="date"
+                class="form-control"
+                id="search_date"
+                name="search_date"
+                value="<%= sql.search_date %>"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="search_boolean" class="col-sm-2 col-form-label"
+            >Boolean</label
+          >
+          <div class="col-sm-10">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="boolean"
+                name="boolean"
+                <% if (sql.boolean === 'on') { %>
+                  checked
+                <% } %>
+              />
+              <select
+               class="form-select"
+               id="search_boolean"
+               name="search_boolean"
+              >
+              <option value="">--pilih--</option>
+                <option value="true" <%= sql.search_boolean === 'true' ? 'selected' : '' %>>True</option>
+                <option value="false" <%= sql.search_boolean === 'false' ? 'selected' : '' %>>False</option>
+             </select>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        <a href="/data" class="btn btn-warning btn-sm">Reset</a>
+        <a href="/data/add" class="btn btn-info btn-sm">Tambah</a>
+   
+      </form>
+
+      <br />
+
+      <br />
+      <table id="myTable" class="table table-striped">
+        <thead>
+          <tr align="text-center">
+            <th scope="col">
+              <% if(sortOrder === "desc"){ %>
+              <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=asc&sortBy=id"><i class="fa-solid fa-sort-down fa-xs "></i></a>
+              <% } %>
+              <% if(sortOrder === "asc"){ %>
+              <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=desc&sortBy=id"><i class="fa-solid fa-sort-up fa-xs "></i></a>
+              <% } %>
+               &nbsp; ID &nbsp;
+            </th>
+            <th scope="col">
+              <% if(sortBy === "string" && sortOrder === "desc"){ %>
+                <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=asc&sortBy=string">
+                  <i class="fa-solid fa-sort-down fa-xs "></i>
+                </a>
+              <% } else { %>
+                <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=desc&sortBy=string">
+                  <i class="fa-solid fa-sort-up fa-xs "></i>
+                </a>
+              <% } %>
+              &nbsp; String
+            </th>
+            <th scope="col">
+              <% if(sortBy === "integer" && sortOrder === "desc"){ %>
+                <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=asc&sortBy=integer">
+                  <i class="fa-solid fa-sort-down fa-xs "></i>
+                </a>
+              <% } else { %>
+                <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=desc&sortBy=integer">
+                  <i class="fa-solid fa-sort-up fa-xs "></i>
+                </a>
+              <% } %>
+            &nbsp; Integer
+            </th>
+            <th scope="col">
+              <% if(sortBy === "float" && sortOrder === "desc"){ %>
+                <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=asc&sortBy=float">
+                  <i class="fa-solid fa-sort-down fa-xs "></i>
+                </a>
+              <% } else { %>
+                <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=desc&sortBy=float">
+                  <i class="fa-solid fa-sort-up fa-xs "></i>
+                </a>
+              <% } %>
+
+            &nbsp; Float
+            </th>
+            <th scope="col">
+              <% if(sortBy === "date" && sortOrder === "desc"){ %>
+                <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=asc&sortBy=date">
+                  <i class="fa-solid fa-sort-down fa-xs "></i>
+                </a>
+              <% } else { %>
+                <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=desc&sortBy=date">
+                  <i class="fa-solid fa-sort-up fa-xs "></i>
+                </a>
+              <% } %>
+            Date
+            </th>
+            <th scope="col">
+              <% if(sortBy === "boolean" && sortOrder === "desc"){ %>
+                <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=asc&sortBy=boolean">
+                  <i class="fa-solid fa-sort-down fa-xs "></i>
+                </a>
+              <% } else { %>
+                <a href="<%= url.split('&').filter(param => !/^sortOrder=|^sortBy=/.test(param)).join('&') %>&sortOrder=desc&sortBy=boolean">
+                  <i class="fa-solid fa-sort-up fa-xs "></i>
+                </a>
+              <% } %>
+              &nbsp; Boolean
+            </th>
+            <th scope="col">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.forEach((datas) => { %>
+          <tr>
+            <th scope="row"><%= datas.id %></th>
+            <td><%= datas.string %></td>
+            <td><%= datas.integer %></td>
+            <td><%= datas.float %></td>
+            <td><%= moment(datas.date).format('DD MMM YYYY') %></td>
+            <td><%= datas.boolean %></td>
+            <td>
+              <a
+                href="/data/edit/<%= datas.id %>"
+                class="btn btn-outline-primary btn-sm"
+                >Edit</a
+              >
+              <a
+                href="/data/delete/<%= datas.id %>"
+                class="btn btn-outline-danger btn-sm"
+                >Hapus</a
+              >
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <% if (page > 1){%>
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="<%= url.replace(`page=${page}`,`page=${page - 1}`) %>"
+              aria-label="Previous"
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <% }%> <% for (let i = 1; i <= pages; i++) { %>
+            
+          <li class="page-item <% if (url.slice(12) === i) { %>active<% } %>">
+            <a
+              class="page-link"
+              href="<%= url.replace(`page=${page}`,`page=${i}`) %>"
+              ><%= i %></a
+            >
+          </li>
+          <% } %> <%if (page < pages){%>
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="<%= url.replace(`page=${parseInt(page)}`,`page=${parseInt(page) + 1}`) %>"
+              aria-label="Next"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          <%}%>
+        </ul>
+      </nav>
+     </div>
+    <br />
+    <script>
+      $(document).ready(function() {
+        $('#myTable').DataTable({
+          dom: 'lfrtip',
+          order: [[0, 'asc']] // Sort by the first column in ascending order
+        });
+      });
+    </script>
+  </body>
+</html>
